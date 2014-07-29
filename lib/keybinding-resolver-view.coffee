@@ -1,9 +1,9 @@
-{$$, View} = require 'atom'
+{$$, $, View} = require 'atom'
 
 module.exports =
 class KeyBindingResolverView extends View
   @content: ->
-    @div class: 'key-binding-resolver tool-panel pannel panel-bottom padding', =>
+    @div class: 'key-binding-resolver tool-panel pannel panel-top padding', =>
       @div class: 'panel-heading padded', =>
         @span 'Key Binding Resolver: '
         @span outlet: 'keystroke', 'Press any key'
@@ -13,7 +13,6 @@ class KeyBindingResolverView extends View
     @attach() if attached
 
     atom.workspaceView.command 'key-binding-resolver:toggle', => @toggle()
-    atom.workspaceView.command 'core:cancel core:close', => @detach()
 
     @on 'click', '.source', (event) -> atom.workspaceView.open(event.target.innerText)
 
@@ -30,7 +29,7 @@ class KeyBindingResolverView extends View
       @attach()
 
   attach: ->
-    atom.workspaceView.prependToBottom(this)
+    $('.panel-layers').prepend(this)
     @subscribe atom.keymap, "matched", ({keystrokes, binding, keyboardEventTarget}) =>
       @update(keystrokes, binding, keyboardEventTarget)
 
@@ -55,34 +54,34 @@ class KeyBindingResolverView extends View
       binding != keyBinding and binding not in unusedKeyBindings
 
     @commands.html $$ ->
-      @table class: 'table-condensed', =>
+      @div class: 'table-condensed', =>
         if keyBinding
-          @tr class: 'used', =>
-            @td class: 'command', keyBinding.command
-            @td class: 'selector', keyBinding.selector
-            @td class: 'source', keyBinding.source
+          @div class: 'used', =>
+            @div class: 'command', keyBinding.command
+            @div class: 'selector', keyBinding.selector
+            @div class: 'source', keyBinding.source
 
         for binding in unusedKeyBindings
-          @tr class: 'unused', =>
-            @td class: 'command', binding.command
-            @td class: 'selector', binding.selector
-            @td class: 'source', binding.source
+          @div class: 'unused', =>
+            @div class: 'command', binding.command
+            @div class: 'selector', binding.selector
+            @div class: 'source', binding.source
 
         for binding in unmatchedKeyBindings
-          @tr class: 'unmatched', =>
-            @td class: 'command', binding.command
-            @td class: 'selector', binding.selector
-            @td class: 'source', binding.source
+          @div class: 'unmatched', =>
+            @div class: 'command', binding.command
+            @div class: 'selector', binding.selector
+            @div class: 'source', binding.source
 
   updatePartial: (keystrokes, keyBindings) ->
     @keystroke.html $$ ->
-      @span class: 'keystroke', "#{keystrokes} (partial)"
+      @div class: 'keystroke', "#{keystrokes} (partial)"
 
     @commands.html $$ ->
-      @table class: 'table-condensed', =>
+      @div class: 'table-condensed', =>
         for binding in keyBindings
-          @tr class: 'unused', =>
-            @td class: 'command', binding.command
-            @td class: 'keystrokes', binding.keystrokes
-            @td class: 'selector', binding.selector
-            @td class: 'source', binding.source
+          @div class: 'unused', =>
+            @div class: 'command', binding.command
+            @div class: 'keystrokes', binding.keystrokes
+            @div class: 'selector', binding.selector
+            @div class: 'source', binding.source

@@ -2,14 +2,19 @@
 @import "octicon-mixins";
 
 .key-binding-resolver {
-  -webkit-flex: 0.25;
-  overflow: scroll;
+  width: 195px;
 
   .keystroke {
     margin-right: 1em;
   }
 
-  table {
+  .table-condensed {
+    word-wrap: break-word;
+
+    .used, .unused, .unmatched {
+      margin: 10px 0;
+    }
+
     .used {
       color: @text-color-success;
     }
