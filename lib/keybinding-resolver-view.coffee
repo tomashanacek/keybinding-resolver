@@ -29,7 +29,7 @@ class KeyBindingResolverView extends View
       @attach()
 
   attach: ->
-    $('.panel-layers').prepend(this)
+    atom.workspaceView.prependToBottom(this)
     @subscribe atom.keymap, "matched", ({keystrokes, binding, keyboardEventTarget}) =>
       @update(keystrokes, binding, keyboardEventTarget)
 
